@@ -12,12 +12,15 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+    setError('');
+    
     let loginEmail = email;
 
     // Username lookup logic
@@ -29,7 +32,7 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
         .single();
 
       if (lookupError || !userRow) {
-        alert("Username not found.");
+        setError("Username not found.");
         setLoading(false);
         return;
       }
@@ -42,9 +45,9 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
     });
 
     if (authError) {
-      alert(authError.message);
+      setError(authError.message);
     } else {
-      onSuccess(); // Closes the modal in Navbar
+      onSuccess(); 
       const { data: roleData } = await supabase
         .from('users')
         .select('role')
@@ -56,21 +59,27 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
     setLoading(false);
   };
 
-  // Inside your ForgotPassword component or Login.tsx logic
-const handleResetRequest = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleForgotPassword = async () => {
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address first.');
+      return;
+    }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    // This is where they go AFTER clicking the email link
-    redirectTo: `${window.location.origin}/auth/update-password`,
-  });
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
-  if (error) alert(error.message);
-  else alert("Check your email for the reset link!");
-  
-  setLoading(false);
-};
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/update-password`,
+    });
+
+    if (resetError) {
+      setError(resetError.message);
+    } else {
+      setSuccess('Reset link sent! Check your email.');
+    }
+    setLoading(false);
+  };
 
   return (
     <form className="modal-form" onSubmit={handleLogin}>
@@ -93,16 +102,24 @@ const handleResetRequest = async (e: React.FormEvent) => {
         />
       </div>
 
-      {/* ADD THIS LINK HERE */}
-    <p className="forgot-password-link" 
-       onClick={handleResetRequest} 
-       style={{ cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', textAlign: 'right', marginBottom: '10px' }}>
-      Forgot Password?
-    </p>
-    
+      {error && <p style={{ color: "#ff4e00", fontSize: "14px", fontWeight: "500" }}>{error}</p>}
+      {success && <p style={{ color: "#4caf50", fontSize: "14px", fontWeight: "500" }}>{success}</p>}
+
+      <p className='forgot-pass'>
+        <button 
+          type="button" 
+          className='link-button' 
+          style={{ background: 'none', border: 'none', color: '#ccc', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
+          onClick={handleForgotPassword}
+        >
+          Forgot password?
+        </button>
+      </p>
+
       <button type="submit" className="submit-btn" disabled={loading}>
         {loading ? 'PROCESSING...' : 'ENTER THE ARENA'}
       </button>
+      
       <p className="account-not-exists">
         No Account Yet? <span className="switch-link" onClick={switchToSignup}>SIGNUP</span>
       </p>

@@ -1,12 +1,13 @@
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMessage, faBell, faUser, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import '../app/css/navbar.css';
 import UserActions from './userActions';
 import { supabase } from '../lib/supabaseClient';
+import Login from './login';
 
 export default function Navbar() {
     const [authMode, setAuthMode] = useState<'login' | 'signup' | null>(null);
@@ -17,7 +18,6 @@ export default function Navbar() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    const router = useRouter();
     const pathname = usePathname();
     const [user, setUser] = useState<any>(null);
 
@@ -46,85 +46,25 @@ export default function Navbar() {
         setSuccess('');
     };
 
-    const handleAuth = async (e: React.FormEvent) => {
+    const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setSuccess('');
         setLoading(true);
 
-        let loginEmail = email;
+        const { error: signUpError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { display_name: username } },
+        });
 
-        if (authMode === 'login') {
-            if (!loginEmail.includes('@')) {
-                const { data: userRow, error: lookupError } = await supabase
-                    .from('users')
-                    .select('email')
-                    .eq('username', loginEmail)
-                    .single();
-
-                if (lookupError || !userRow) {
-                    setError('Username not found.');
-                    setLoading(false);
-                    return;
-                }
-                loginEmail = userRow.email;
-            }
-
-            const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-                email: loginEmail,
-                password,
-            });
-
-            if (authError) {
-                setError(authError.message);
-                setLoading(false);
-            } else {
-                closeAuth();
-
-                const { data: roleData } = await supabase
-                    .from('users')
-                    .select('role')
-                    .eq('id', authData.user.id)
-                    .single();
-
-                router.push(roleData?.role === 'admin' ? '/admin-dashboard' : '/dashboard');
-            }
+        if (signUpError) {
+            setError(signUpError.message);
         } else {
-            const { error: signUpError } = await supabase.auth.signUp({
-                email,
-                password,
-                options: { data: { display_name: username } },
-            });
-
-            if (signUpError) {
-                setError(signUpError.message);
-            } else {
-                setSuccess('Success! Check your email to confirm.');
-                closeAuth();
-            }
+            setSuccess('Success! Check your email to confirm.');
+            // We don't closeAuth() immediately so they can see the success message
         }
         setLoading(false);
-    };
-
-    const handleForgotPassword = async () => {
-        if (!email) {
-            setError('Please enter your email to reset password.');
-            return;
-        }
-        setLoading(true);
-        setError('');
-        setSuccess('');
-        try {
-            const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + '/auth/update-password',
-            });
-            if (resetError) throw resetError;
-            setSuccess('Password reset email sent! Check your inbox.');
-        } catch (err: any) {
-            setError(err.message || 'Failed to send reset email.');
-        } finally {
-            setLoading(false);
-        }
     };
 
     return (
@@ -132,7 +72,7 @@ export default function Navbar() {
             <header className="navbar-header">
                 <h1 className="logo">SquadZone</h1>
                 <nav className="menu-btns">
-                    <a href="#" className="menu-link">HOME</a>
+                    <a href="/" className="menu-link">HOME</a>
                     <a href="#" className="menu-link">SQUAD</a>
                     <a href="#" className="menu-link">LEADERBOARDS</a>
                     <a href="#" className="menu-link">TOURNAMENTS</a>
@@ -161,8 +101,10 @@ export default function Navbar() {
                             {authMode === 'login' ? 'Login to SquadZone' : 'Join the Squad'}
                         </h2>
 
-                        <form className="modal-form" onSubmit={handleAuth}>
-                            {authMode === 'signup' && (
+                        {authMode === 'login' ? (
+                            <Login onSuccess={closeAuth} switchToSignup={() => setAuthMode('signup')} />
+                        ) : (
+                            <form className="modal-form" onSubmit={handleSignup}>
                                 <div className="input-group">
                                     <input
                                         type="text"
@@ -172,53 +114,34 @@ export default function Navbar() {
                                         onChange={(e) => setUsername(e.target.value)}
                                     />
                                 </div>
-                            )}
-
-                            <div className="input-group">
-                                <input
-                                    type="text"
-                                    placeholder={authMode === 'login' ? 'Email or Username' : 'Email'}
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className="input-group">
-                                <input
-                                    type="password"
-                                    placeholder="Password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
-
-                            {error && <p style={{ color: "#ff4e00", fontWeight: "500" }}>{error}</p>}
-                            {success && <p style={{ color: "#4caf50", fontWeight: "500" }}>{success}</p>}
-
-                            {authMode === 'login' && (
-                                <p className='forgot-pass'>
-                                    <a href='/update-password'
-                                        onClick={handleForgotPassword}
-                                    >
-                                        Forgot password?
-                                    </a>
+                                <div className="input-group">
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <input
+                                        type="password"
+                                        placeholder="Password"
+                                        required
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </div>
+                                {error && <p style={{ color: "#ff4e00", fontWeight: "500" }}>{error}</p>}
+                                {success && <p style={{ color: "#4caf50", fontWeight: "500" }}>{success}</p>}
+                                <button type="submit" className="submit-btn" disabled={loading}>
+                                    {loading ? 'PROCESSING...' : 'CREATE ACCOUNT'}
+                                </button>
+                                <p className="account-not-exists">
+                                    Already have an account? <span className="switch-link" onClick={() => setAuthMode('login')}>LOGIN</span>
                                 </p>
-                            )}
-
-                            <button type="submit" className="submit-btn" disabled={loading}>
-                                {loading ? 'PROCESSING...' : (authMode === 'login' ? 'ENTER THE ARENA' : 'CREATE ACCOUNT')}
-                            </button>
-
-                            <p className="account-not-exists">
-                                {authMode === 'login' ? (
-                                    <>No Account Yet? <span className="switch-link" onClick={() => setAuthMode('signup')}>SIGNUP</span></>
-                                ) : (
-                                    <>Already have an account? <span className="switch-link" onClick={() => setAuthMode('login')}>LOGIN</span></>
-                                )}
-                            </p>
-
-                        </form>
+                            </form>
+                        )}
                     </div>
                 </div>
             )}
