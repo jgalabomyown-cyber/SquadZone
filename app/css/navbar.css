@@ -1,10 +1,14 @@
 /* Navbar styles */
+*{
+  font-family: "Montserrat", sans-serif;
+}
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: rgb(10, 10, 20);
+  background: #0d0914;
+  background: linear-gradient(90deg,rgba(13, 9, 20, 1) 0%, rgba(11, 20, 46, 1) 50%, rgba(32, 29, 38, 1) 100%);
   border-bottom: 1px solid white;
   color: orange;
 }
@@ -25,10 +29,10 @@ header {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   transition: all 0.3s;
+  font-size: 16px;
 }
 
 .menu-btns a:hover {
-  background-color: #555;
   color: orange;
 }
 
@@ -149,9 +153,14 @@ header {
     display: flex;
     align-items: center;
     gap: 30px;
+    font-size: 20px;
 }
 
 .login-btn{
+  cursor: pointer;
+}
+
+.join-btn {
   cursor: pointer;
 }
 

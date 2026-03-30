@@ -56,6 +56,22 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
     setLoading(false);
   };
 
+  // Inside your ForgotPassword component or Login.tsx logic
+const handleResetRequest = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    // This is where they go AFTER clicking the email link
+    redirectTo: `${window.location.origin}/auth/update-password`,
+  });
+
+  if (error) alert(error.message);
+  else alert("Check your email for the reset link!");
+  
+  setLoading(false);
+};
+
   return (
     <form className="modal-form" onSubmit={handleLogin}>
       <div className="input-group">
@@ -76,6 +92,14 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
           onChange={(e) => setPassword(e.target.value)} 
         />
       </div>
+
+      {/* ADD THIS LINK HERE */}
+    <p className="forgot-password-link" 
+       onClick={handleResetRequest} 
+       style={{ cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', textAlign: 'right', marginBottom: '10px' }}>
+      Forgot Password?
+    </p>
+    
       <button type="submit" className="submit-btn" disabled={loading}>
         {loading ? 'PROCESSING...' : 'ENTER THE ARENA'}
       </button>

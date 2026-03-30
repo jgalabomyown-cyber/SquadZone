@@ -14,6 +14,8 @@ export default function Navbar() {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     const router = useRouter();
     const pathname = usePathname();
@@ -40,10 +42,14 @@ export default function Navbar() {
         setEmail('');
         setPassword('');
         setUsername('');
+        setError('');
+        setSuccess('');
     };
 
     const handleAuth = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
+        setSuccess('');
         setLoading(true);
 
         let loginEmail = email;
@@ -57,7 +63,7 @@ export default function Navbar() {
                     .single();
 
                 if (lookupError || !userRow) {
-                    alert('Username not found.');
+                    setError('Username not found.');
                     setLoading(false);
                     return;
                 }
@@ -70,7 +76,7 @@ export default function Navbar() {
             });
 
             if (authError) {
-                alert(authError.message);
+                setError(authError.message);
                 setLoading(false);
             } else {
                 closeAuth();
@@ -91,13 +97,34 @@ export default function Navbar() {
             });
 
             if (signUpError) {
-                alert(signUpError.message);
+                setError(signUpError.message);
             } else {
-                alert('Success! Check your email to confirm.');
+                setSuccess('Success! Check your email to confirm.');
                 closeAuth();
             }
         }
         setLoading(false);
+    };
+
+    const handleForgotPassword = async () => {
+        if (!email) {
+            setError('Please enter your email to reset password.');
+            return;
+        }
+        setLoading(true);
+        setError('');
+        setSuccess('');
+        try {
+            const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/auth/update-password',
+            });
+            if (resetError) throw resetError;
+            setSuccess('Password reset email sent! Check your inbox.');
+        } catch (err: any) {
+            setError(err.message || 'Failed to send reset email.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -115,7 +142,7 @@ export default function Navbar() {
                     {!user ? (
                         <>
                             <button onClick={() => setAuthMode('login')} className="login-btn">LOGIN</button>
-                            <button onClick={() => setAuthMode('signup')} className="join-link">JOIN</button>
+                            <button onClick={() => setAuthMode('signup')} className="join-btn">JOIN</button>
                         </>
                     ) : (
                         <UserActions user={user} />
@@ -166,6 +193,19 @@ export default function Navbar() {
                                 />
                             </div>
 
+                            {error && <p style={{ color: "#ff4e00", fontWeight: "500" }}>{error}</p>}
+                            {success && <p style={{ color: "#4caf50", fontWeight: "500" }}>{success}</p>}
+
+                            {authMode === 'login' && (
+                                <p className='forgot-pass'>
+                                    <a href='/update-password'
+                                        onClick={handleForgotPassword}
+                                    >
+                                        Forgot password?
+                                    </a>
+                                </p>
+                            )}
+
                             <button type="submit" className="submit-btn" disabled={loading}>
                                 {loading ? 'PROCESSING...' : (authMode === 'login' ? 'ENTER THE ARENA' : 'CREATE ACCOUNT')}
                             </button>
@@ -177,6 +217,7 @@ export default function Navbar() {
                                     <>Already have an account? <span className="switch-link" onClick={() => setAuthMode('login')}>LOGIN</span></>
                                 )}
                             </p>
+
                         </form>
                     </div>
                 </div>
