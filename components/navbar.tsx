@@ -1,10 +1,11 @@
-"use client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+'use client';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMessage, faBell, faUser, faTimes } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import '../app/css/navbar.css';
-import UserActions from './userActions'
+import UserActions from './userActions';
 import { supabase } from '../lib/supabaseClient';
 
 export default function Navbar() {
@@ -16,22 +17,23 @@ export default function Navbar() {
 
     const router = useRouter();
     const pathname = usePathname();
-    const [user, setUser] = useState<any>(null); // This replaces isUserValid; 
+    const [user, setUser] = useState<any>(null);
 
-    // 1. SAFETY NET: Close modal whenever the URL changes
     useEffect(() => {
-        // 1. Check current session on mount
         supabase.auth.getSession().then(({ data: { session } }) => {
             setUser(session?.user ?? null);
         });
 
-        // 2. Listen for login/logout events (this makes it reactive!)
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
         });
 
         return () => subscription.unsubscribe();
     }, []);
+
+    useEffect(() => {
+        setAuthMode(null);
+    }, [pathname]);
 
     const closeAuth = () => {
         setAuthMode(null);
@@ -44,10 +46,9 @@ export default function Navbar() {
         e.preventDefault();
         setLoading(true);
 
-        let loginEmail = email; 
+        let loginEmail = email;
 
         if (authMode === 'login') {
-            // Check if user entered a Username instead of Email
             if (!loginEmail.includes('@')) {
                 const { data: userRow, error: lookupError } = await supabase
                     .from('users')
@@ -56,7 +57,7 @@ export default function Navbar() {
                     .single();
 
                 if (lookupError || !userRow) {
-                    alert("Username not found.");
+                    alert('Username not found.');
                     setLoading(false);
                     return;
                 }
@@ -65,15 +66,14 @@ export default function Navbar() {
 
             const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
                 email: loginEmail,
-                password
+                password,
             });
 
             if (authError) {
                 alert(authError.message);
                 setLoading(false);
             } else {
-                // SUCCESS: Close modal and reset fields BEFORE redirect
-                closeAuth(); 
+                closeAuth();
 
                 const { data: roleData } = await supabase
                     .from('users')
@@ -84,17 +84,16 @@ export default function Navbar() {
                 router.push(roleData?.role === 'admin' ? '/admin-dashboard' : '/dashboard');
             }
         } else {
-            // SIGNUP LOGIC
             const { error: signUpError } = await supabase.auth.signUp({
                 email,
                 password,
-                options: { data: { display_name: username } }
+                options: { data: { display_name: username } },
             });
 
             if (signUpError) {
                 alert(signUpError.message);
             } else {
-                alert("Success! Check your email to confirm.");
+                alert('Success! Check your email to confirm.');
                 closeAuth();
             }
         }
@@ -112,17 +111,16 @@ export default function Navbar() {
                     <a href="#" className="menu-link">TOURNAMENTS</a>
                     <a href="#" className="menu-link">STORE</a>
                 </nav>
-                
                 <div className="login-join-opts">
-                {!user ? ( // If NO user, show Login/Join
-                    <>
-                        <button onClick={() => setAuthMode('login')} className="login-btn">LOGIN</button>
-                        <button onClick={() => setAuthMode('signup')} className="join-link">JOIN</button>
-                    </>
-                ) : ( // If user EXISTS, show UserActions
-                    <UserActions user={user} /> 
-                )}
-            </div>
+                    {!user ? (
+                        <>
+                            <button onClick={() => setAuthMode('login')} className="login-btn">LOGIN</button>
+                            <button onClick={() => setAuthMode('signup')} className="join-link">JOIN</button>
+                        </>
+                    ) : (
+                        <UserActions user={user} />
+                    )}
+                </div>
             </header>
 
             {authMode !== null && (
@@ -135,14 +133,14 @@ export default function Navbar() {
                         <h2 className="modal-title">
                             {authMode === 'login' ? 'Login to SquadZone' : 'Join the Squad'}
                         </h2>
-                        
+
                         <form className="modal-form" onSubmit={handleAuth}>
                             {authMode === 'signup' && (
                                 <div className="input-group">
-                                    <input 
-                                        type="text" 
-                                        placeholder="Username" 
-                                        required 
+                                    <input
+                                        type="text"
+                                        placeholder="Username"
+                                        required
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                     />
@@ -150,19 +148,19 @@ export default function Navbar() {
                             )}
 
                             <div className="input-group">
-                                <input 
-                                    type="text" 
-                                    placeholder={authMode === 'login' ? "Email or Username" : "Email"} 
-                                    required 
+                                <input
+                                    type="text"
+                                    placeholder={authMode === 'login' ? 'Email or Username' : 'Email'}
+                                    required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="input-group">
-                                <input 
-                                    type="password" 
-                                    placeholder="Password" 
-                                    required 
+                                <input
+                                    type="password"
+                                    placeholder="Password"
+                                    required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
