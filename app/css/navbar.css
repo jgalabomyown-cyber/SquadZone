@@ -1,0 +1,249 @@
+/* Navbar styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: rgb(10, 10, 20);
+  border-bottom: 1px solid white;
+  color: orange;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.menu-btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu-btns a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s;
+}
+
+.menu-btns a:hover {
+  background-color: #555;
+  color: orange;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(2px); 
+}
+
+.modal-content {
+    background-color: #1e1e1e;
+    padding: 2.5rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    border: 1px solid #333;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.close-modal:hover {
+    color: white;
+}
+
+.modal-title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-form input {
+    width: 100%;
+    padding: 12px;
+    background-color: #000;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: white;
+    outline: none;
+}
+
+.modal-form input:focus {
+    border-color: #3b82f6;
+}
+
+.forgot-pass {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot-pass a{
+  color: rgb(0, 162, 255);
+  transition: all ease 0.3s;
+}
+
+.forgot-pass a:hover {
+  color: aqua;
+}
+
+.submit-btn {
+    margin-top: 16px;
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: rgb(255, 123, 0);
+}
+
+.account-not-exists {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.switch-link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: orange;
+}
+
+/*LOGIN-SIGNUP-OPTS*/
+.login-join-opts{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.login-btn{
+  cursor: pointer;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
+
+.user-actions button {
+  cursor: pointer;
+}
+
+.profile-btn {
+  margin-left: 20px;
+}
+
+.user-actions-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: background 0.3s;
+}
+
+.profile-trigger:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar-circle {
+    width: 35px;
+    height: 35px;
+    background: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ef4444; /* MOBA Red accent */
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    min-width: 180px;
+    z-index: 1000;
+    list-style: none;
+    padding: 10px 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.dropdown-item {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #ccc;
+    transition: 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #2a2a2a;
+    color: #fff;
+}
+
+.logout:hover {
+    color: #ff4d4d; /* Red highlight for logout */
+}
+
+.dropdown-divider {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 5px 0;
+}
+
+.dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+}
