@@ -169,16 +169,20 @@ header {
 .login-join-opts{
     display: flex;
     align-items: center;
-    gap: 30px;
-    font-size: 20px;
+    gap: 20px;
+    font-size: 18px;
 }
 
 .login-btn{
   cursor: pointer;
+  color: white;
 }
 
 .join-btn {
   cursor: pointer;
+  border: 1px solid white;
+  padding: 8px 20px;
+  border-radius: 24px;
 }
 
 .user-actions {
@@ -228,7 +232,7 @@ header {
 
 .user-dropdown {
     position: absolute;
-    top: 50px;
+    top: 75px;
     right: 0;
     background: #1a1a1a;
     border: 1px solid #333;
@@ -239,6 +243,9 @@ header {
     padding: 10px 0;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
+.user-dropdown li{
+  font-size: 14px;
+}
 
 .dropdown-item {
     padding: 12px 20px;
@@ -248,6 +255,7 @@ header {
     cursor: pointer;
     color: #ccc;
     transition: 0.2s;
+    font-size: 15px;
 }
 
 .dropdown-item:hover {
