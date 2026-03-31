@@ -165,6 +165,18 @@ header {
   color: orange;
 }
 
+/* SEARCH BAR STYLES*/
+.search-bar input{
+  padding: 10px 14px;
+  background-color: whitesmoke;
+  border-radius: 4px;
+  border: 2px solid orange;
+  color: black;
+  margin-left: 20px;
+  font-size: 14px;
+  width: 100%;
+}
+
 /*LOGIN-SIGNUP-OPTS*/
 .login-join-opts{
     display: flex;

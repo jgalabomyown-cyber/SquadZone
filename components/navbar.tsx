@@ -72,12 +72,15 @@ export default function Navbar() {
             <header className="navbar-header">
                 <h1 className="logo">SquadZone</h1>
                 <nav className="menu-btns">
-                    <a href="/" className="menu-link">HOME</a>
                     <a href="#" className="menu-link">SQUAD</a>
                     <a href="#" className="menu-link">LEADERBOARDS</a>
                     <a href="#" className="menu-link">TOURNAMENTS</a>
                     <a href="#" className="menu-link">STORE</a>
                 </nav>
+
+                <div className="search-bar">
+                    <input type="text" placeholder='Search here'/>
+                </div>
                 <div className="login-join-opts">
                     {!user ? (
                         <>
