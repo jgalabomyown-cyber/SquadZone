@@ -20,7 +20,8 @@ header {
 
 .menu-btns {
   display: flex;
-  gap: 1rem;
+  gap: 5px;
+  margin-left: 20px;
 }
 
 .menu-btns a {

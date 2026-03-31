@@ -72,7 +72,7 @@ export default function Navbar() {
             <header className="navbar-header">
                 <h1 className="logo">SquadZone</h1>
                 <nav className="menu-btns">
-                    <a href="#" className="menu-link">SQUAD</a>
+                    <a href="./dashboard" className="menu-link">SQUAD</a>
                     <a href="#" className="menu-link">LEADERBOARDS</a>
                     <a href="#" className="menu-link">TOURNAMENTS</a>
                     <a href="#" className="menu-link">STORE</a>
