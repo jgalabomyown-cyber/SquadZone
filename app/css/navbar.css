@@ -162,6 +162,9 @@ header {
 
 /* SEARCH BAR STYLES*/
 .search-bar input{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px 14px;
   background-color:rgb(39, 58, 112);
   border-radius: 8px;
@@ -175,7 +178,6 @@ header {
 .login-join-opts{
     display: flex;
     align-items: center;
-    gap: 20px;
     font-size: 18px;
 }
 

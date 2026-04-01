@@ -5,6 +5,7 @@ import { faTimes, faBars } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import '../app/css/navbar.css';
+import '../app/css/userAction.css';
 import UserActions from './userActions';
 import { supabase } from '../lib/supabaseClient';
 import Login from './login';
@@ -79,17 +80,17 @@ export default function Navbar() {
         <>
             <header className="fixed top-0 left-0 right-0 z-50 h-20 flex items-center px-4 bg-[#0d0914] border-b border-white/10">
 
-        <div className="hamburger-and-logo flex items-center">
+        <div className="flex content-start items-center gap-2 sm:gap-2">
                 <button 
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="lg:hidden text-white text-2xl mr-4 hover:text-orange-500 transition-colors"
+                    className="lg:hidden text-white text-lg sm:text-2xl p-1 hover:text-orange-500 transition-colors"
                 >
                     <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
                 </button>
                 {/* LOGO SECTION */}
-                <Link href="/home" className="flex items-center gap-2 group">
+                <Link href="/home" className="shrink-0">
                     {/* This shows ONLY on Mobile/Tablet (below 1024px) */}
-                    <span className="lg:hidden text-2xl font-black text-orange-500 italic tracking-tighter bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
+                    <span className="lg:hidden text-lg font-black text-orange-500 italic tracking-tighter bg-orange-500/10 px-1.5 py-0.5 rounded border border-orange-500/20">
                         SZ
                     </span>
 
@@ -107,17 +108,24 @@ export default function Navbar() {
                     <a href="#" className="menu-link">STORE</a>
                 </nav>
 
-                <div className="search-bar">
+                <div className="search-bar hidden xl:block flex-1 max-w-xs mx-4">
                     <input 
                     className="outline-none focus:ring-0 focus:border-amber-600"
                     type="text" placeholder='Search here...'/>
                 </div>
-                <div className="login-join-opts">
+                <div className="login-join-opts flex items-center gap-2 sm:gap-4">
                     {!user ? (
-                        <>
-                            <button onClick={() => setAuthMode('login')} className="login-btn">LOGIN</button>
-                            <button onClick={() => setAuthMode('signup')} className="join-btn">JOIN</button>
-                        </>
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <button 
+                            onClick={() => setAuthMode('login')} 
+                            className="login-btn sm:text-xs text-[12px] tracking-widest hover: text-orange-500 transition-colors">LOGIN
+                            </button>
+
+                            <button 
+                            onClick={() => setAuthMode('signup')} 
+                            className="join-btn sm:px-5 sm:py-2 text-[11px] sm:text-xs hover:bg-white hover:text-black transition-all tracking-widest whitespace-nowrap">JOIN
+                            </button>
+                        </div>
                     ) : (
                         <UserActions user={user} />
                     )}
