@@ -45,7 +45,7 @@ export default function DashboardLayout() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-gray-400 p-6 pt-10">
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-400 p-6 pt-25">
       
       {/* 1. SINGLE GRID CONTAINER: Handles responsive columns */}
       <div className="grid grid-cols-1 xl:grid-cols-[2fr_3fr_2fr] gap-8 max-w-[1600px] mx-auto">
