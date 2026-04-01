@@ -54,7 +54,7 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
         .eq('id', authData.user.id)
         .single();
 
-      router.push(roleData?.role === 'admin' ? '/admin-dashboard' : '/dashboard');
+      router.push(roleData?.role === 'admin' ? '/admin-dashboard' : '/home');
     }
     setLoading(false);
   };

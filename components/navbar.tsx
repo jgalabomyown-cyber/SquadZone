@@ -72,6 +72,7 @@ export default function Navbar() {
             <header className="navbar-header">
                 <h1 className="logo">SquadZone</h1>
                 <nav className="menu-btns">
+                    <a href="./home" className="menu-link">HOME</a>
                     <a href="./dashboard" className="menu-link">SQUAD</a>
                     <a href="#" className="menu-link">LEADERBOARDS</a>
                     <a href="#" className="menu-link">TOURNAMENTS</a>
@@ -79,7 +80,9 @@ export default function Navbar() {
                 </nav>
 
                 <div className="search-bar">
-                    <input type="text" placeholder='Search here'/>
+                    <input 
+                    className="outline-none focus:ring-0 focus:border-amber-600"
+                    type="text" placeholder='Search here...'/>
                 </div>
                 <div className="login-join-opts">
                     {!user ? (

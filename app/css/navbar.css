@@ -27,7 +27,7 @@ header {
 .menu-btns a {
   color: white;
   text-decoration: none;
-  padding: 0.5rem 1rem;
+  padding: 6px 12px;
   border-radius: 0.25rem;
   transition: all 0.3s;
   font-size: 16px;
@@ -169,10 +169,9 @@ header {
 /* SEARCH BAR STYLES*/
 .search-bar input{
   padding: 10px 14px;
-  background-color: whitesmoke;
-  border-radius: 4px;
-  border: 2px solid orange;
-  color: black;
+  background-color:rgb(39, 58, 112);
+  border-radius: 8px;
+  color: white;
   margin-left: 20px;
   font-size: 14px;
   width: 100%;
