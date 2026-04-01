@@ -35,6 +35,11 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
         setError("Username not found.");
         setLoading(false);
         return;
+
+      if (!error) {
+        //use replace so the user can't go back to login/landing page
+        router.replace('/home')
+      }
       }
       loginEmail = userRow.email;
     }
