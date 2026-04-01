@@ -1,0 +1,96 @@
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
+
+.user-actions button {
+  cursor: pointer;
+}
+
+.profile-btn {
+  margin-left: 20px;
+}
+
+.user-actions-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: background 0.3s;
+}
+
+.profile-trigger:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar-circle {
+    width: 35px;
+    height: 35px;
+    background: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ef4444; /* MOBA Red accent */
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 75px;
+    right: 0;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    min-width: 180px;
+    z-index: 1000;
+    list-style: none;
+    padding: 10px 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+.user-dropdown li{
+  font-size: 14px;
+}
+
+.dropdown-item {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #ccc;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+.dropdown-item:hover {
+    background: #2a2a2a;
+    color: #fff;
+}
+
+.logout:hover {
+    color: #ff4d4d; /* Red highlight for logout */
+}
+
+.dropdown-divider {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 5px 0;
+}
+
+.dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+}

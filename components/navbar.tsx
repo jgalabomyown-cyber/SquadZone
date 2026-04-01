@@ -1,7 +1,7 @@
 'use client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faBars } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import '../app/css/navbar.css';
@@ -9,7 +9,10 @@ import UserActions from './userActions';
 import { supabase } from '../lib/supabaseClient';
 import Login from './login';
 
+import Link from 'next/link';
+
 export default function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [authMode, setAuthMode] = useState<'login' | 'signup' | null>(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,6 +37,11 @@ export default function Navbar() {
     }, []);
 
     useEffect(() => {
+        setAuthMode(null);
+    }, [pathname]);
+
+    useEffect(() => {
+        setIsMenuOpen(false);
         setAuthMode(null);
     }, [pathname]);
 
@@ -69,9 +77,29 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="navbar-header">
-                <h1 className="logo">SquadZone</h1>
-                <nav className="menu-btns">
+            <header className="fixed top-0 left-0 right-0 z-50 h-20 flex items-center px-4 bg-[#0d0914] border-b border-white/10">
+
+        <div className="hamburger-and-logo flex items-center">
+                <button 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="lg:hidden text-white text-2xl mr-4 hover:text-orange-500 transition-colors"
+                >
+                    <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+                </button>
+                {/* LOGO SECTION */}
+                <Link href="/home" className="flex items-center gap-2 group">
+                    {/* This shows ONLY on Mobile/Tablet (below 1024px) */}
+                    <span className="lg:hidden text-2xl font-black text-orange-500 italic tracking-tighter bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
+                        SZ
+                    </span>
+
+                    {/* This shows ONLY on Desktop (1024px and up) */}
+                    <span className="hidden lg:block text-2xl font-black text-orange-500 italic tracking-tighter">
+                        SQUADZONE
+                    </span>
+                </Link>
+                </div>
+                <nav className="menu-btns hidden lg:flex">
                     <a href="./home" className="menu-link">HOME</a>
                     <a href="./dashboard" className="menu-link">SQUAD</a>
                     <a href="#" className="menu-link">LEADERBOARDS</a>
@@ -95,6 +123,24 @@ export default function Navbar() {
                     )}
                 </div>
             </header>
+
+            {/* 6. SLIDE-OUT MOBILE SIDEBAR */}
+            {/* Dark Overlay Background */}
+            <div 
+                className={`fixed inset-0 bg-black/60 z-[60] transition-opacity duration-300 lg:hidden ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                onClick={() => setIsMenuOpen(false)}
+            />
+
+            {/* The Actual Sidebar Menu */}
+            <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#0d0914] border-r border-white/10 z-[70] shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                <div className="p-8 flex flex-col gap-6 pt-24">
+                    <a href="./home" className="text-white font-bold text-lg hover:text-orange-500">HOME</a>
+                    <a href="./dashboard" className="text-white font-bold text-lg hover:text-orange-500">SQUAD</a>
+                    <a href="#" className="text-white font-bold text-lg hover:text-orange-500">LEADERBOARDS</a>
+                    <a href="#" className="text-white font-bold text-lg hover:text-orange-500">TOURNAMENTS</a>
+                    <a href="#" className="text-white font-bold text-lg hover:text-orange-500">STORE</a>
+                </div>
+            </div>
 
             {authMode !== null && (
                 <div className="modal-overlay" onClick={closeAuth}>
