@@ -33,7 +33,7 @@ export default function LandingPage() {
     checkUser();
   }, [router]);
   return (
-        <div className="space-y-6 pt-25 pl-10 pr-10">
+        <div className="space-y-6 pt-25 pl-5 pr-5">
           <div className="bg-gradient-to-r from-[#111] to-[#0a0a0a] p-8 rounded-lg border border-[#333]">
             <p>
               Please Login to View Full App Features
