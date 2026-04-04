@@ -143,7 +143,7 @@ export default function Navbar() {
             <div className={`fixed top-0 left-0 h-full w-[280px] bg-[#0d0914] border-r border-white/10 z-[70] shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <div className="p-8 flex flex-col gap-6 pt-24">
                     <a href="./home" className="text-white font-bold text-lg hover:text-orange-500">HOME</a>
-                    <a href="./dashboard" className="text-white font-bold text-lg hover:text-orange-500">SQUAD</a>
+                    <a href="./squad" className="text-white font-bold text-lg hover:text-orange-500">SQUAD</a>
                     <a href="#" className="text-white font-bold text-lg hover:text-orange-500">LEADERBOARDS</a>
                     <a href="#" className="text-white font-bold text-lg hover:text-orange-500">TOURNAMENTS</a>
                     <a href="#" className="text-white font-bold text-lg hover:text-orange-500">STORE</a>
