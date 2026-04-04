@@ -6,7 +6,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
   background: #0d0914;
   background: linear-gradient(90deg,rgba(13, 9, 20, 1) 0%, rgba(11, 20, 46, 1) 50%, rgba(32, 29, 38, 1) 100%);
   border-bottom: 1px solid white;
