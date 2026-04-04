@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
 const HomeCard: React.FC<{
@@ -18,8 +19,9 @@ const HomeCard: React.FC<{
 );
 
 export default function DashboardLayout() {
-  const [userName, setUserName] = useState("PLAYER-1");
+  const [userName, setUserName] = useState("GUEST");
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const leaderboards = [
     { rank: 1, name: "Neon Knights", points: 8200 },
@@ -29,20 +31,32 @@ export default function DashboardLayout() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      // 1. Get the current session
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        // 2. If no session, kick them back to the landing page
+        router.replace('/');
+        return; // Exit early
+      }
+
+      // 3. If session exists, grab the display name
+      const user = session.user;
       if (user?.user_metadata?.display_name) {
         setUserName(user.user_metadata.display_name);
       }
+      
       setLoading(false);
     };
+
     fetchUser();
   }, []);
 
-  if (loading) return (
+  /*if (loading) return (
     <div className="flex h-screen items-center justify-center bg-[#0a0a0a] text-orange-500 font-black italic tracking-tighter text-3xl">
       LOADING ARENA...
     </div>
-  );
+  );*/
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-400 p-6 pt-25">
@@ -143,7 +157,7 @@ export default function DashboardLayout() {
               ))}
             </div>
             <button className="w-full mt-4 text-[9px] font-bold text-gray-600 hover:text-white uppercase tracking-[0.2em] transition-all">
-               View Full Leaderboard
+              View Full Leaderboard
             </button>
           </HomeCard>
         </div>
