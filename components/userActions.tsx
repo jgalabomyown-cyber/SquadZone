@@ -42,10 +42,16 @@ export default function UserActions({user}: {user: any}) {
                             <span>{user?.email}</span>
                         </li>
                         <hr className="dropdown-divider" />
+                        
+                        <li className='dropdown-item profile'>
+                            <span><a href="/profile">Profile</a></span>
+                        </li>
+
                         <li className="dropdown-item logout" onClick={handleLogout}>
                             <FontAwesomeIcon icon={faSignOutAlt} />
                             <span>Logout</span>
                         </li>
+                        
                     </ul>
                 </>
             )}
