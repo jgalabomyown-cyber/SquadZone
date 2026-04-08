@@ -62,7 +62,7 @@ export default function DashboardLayout() {
     <div className="min-h-screen bg-[#0a0a0a] text-gray-400 p-6 pt-25">
       
       {/* 1. SINGLE GRID CONTAINER: Handles responsive columns */}
-      <div className="grid grid-cols-1 xl:grid-cols-[2fr_3fr_2fr] gap-8 max-w-[1600px] mx-auto">
+      <div className="grid grid-cols-1 xl:grid-cols-[2fr_3fr_2fr] gap-8 max-w-7xl mx-auto">
         
         {/* === LEFT COLUMN: SQUAD & TOURNAMENTS (Hidden on Mobile/Tablet) === */}
         <div className="hidden xl:flex flex-col space-y-6">

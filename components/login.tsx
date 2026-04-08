@@ -17,52 +17,68 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    
-    let loginEmail = email;
+      e.preventDefault();
+      setLoading(true);
+      setError('');
+      
+      let loginEmail = email;
 
-    // Username lookup logic
-    if (!loginEmail.includes('@')) {
-      const { data: userRow, error: lookupError } = await supabase
-        .from('users')
-        .select('email')
-        .eq('username', loginEmail)
-        .single();
+      // 1. Username lookup logic
+      if (!loginEmail.includes('@')) {
+        const { data: userRow, error: lookupError } = await supabase
+          .from('users')
+          .select('email')
+          .eq('username', loginEmail)
+          .single();
 
-      if (lookupError || !userRow) {
-        setError("Username not found.");
+        if (lookupError || !userRow) {
+          setError("Username not found.");
+          setLoading(false);
+          return;
+        }
+        loginEmail = userRow.email;
+      }
+
+      // 2. Perform ONE login call
+      const { data: authResult, error: authError } = await supabase.auth.signInWithPassword({
+        email: loginEmail,
+        password,
+      });
+
+      if (authError || !authResult.user) {
+        setError(authError?.message || "Login failed");
         setLoading(false);
         return;
-
-      if (!error) {
-        //use replace so the user can't go back to login/landing page
-        router.replace('/home')
       }
+
+      // 3. Login is successful, now check the role from your 'users' table
+      try {
+        const { data: profile, error: profileError } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', authResult.user.id)
+          .single();
+
+        if (profileError) throw profileError;
+
+        onSuccess(); // Close modal/handle state in parent
+
+        // 4. Final Redirect Logic
+        // Using .toLowerCase() makes it safer (handles 'Admin' vs 'admin')
+        if (profile?.role?.toLowerCase() === "admin") {
+          router.push("/admin-dashboard");
+        } else {
+          router.push("/profile");
+        }
+        
+      } catch (err) {
+        console.error("Role fetch error:", err);
+        // Fallback if role fetch fails: send to profile
+        router.push("/profile");
+      } finally {
+        setLoading(false);
       }
-      loginEmail = userRow.email;
-    }
-
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email: loginEmail,
-      password,
-    });
-
-    if (authError) {
-      setError(authError.message);
-    } else {
-      onSuccess(); 
-      const { data: roleData } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', authData.user.id)
-        .single();
-
-      router.push(roleData?.role === 'admin' ? '/admin-dashboard' : '/home');
-    }
-    setLoading(false);
-  };
+    };
 
   const handleForgotPassword = async () => {
     if (!email || !email.includes('@')) {
