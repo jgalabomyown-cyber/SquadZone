@@ -52,11 +52,11 @@ export default function DashboardLayout() {
     fetchUser();
   }, []);
 
-  /*if (loading) return (
+  if (loading) return (
     <div className="flex h-screen items-center justify-center bg-[#0a0a0a] text-orange-500 font-black italic tracking-tighter text-3xl">
       LOADING ARENA...
     </div>
-  );*/
+  );
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-400 p-6 pt-25">
