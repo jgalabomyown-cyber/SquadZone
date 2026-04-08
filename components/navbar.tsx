@@ -3,12 +3,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faBars } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import '../app/css/navbar.css';
 import '../app/css/userAction.css';
 import UserActions from './userActions';
 import { supabase } from '../lib/supabaseClient';
 import Login from './login';
+import { usePathname } from "next/navigation";
 
 import Link from 'next/link';
 
@@ -23,6 +23,12 @@ export default function Navbar() {
     const [success, setSuccess] = useState('');
 
     const pathname = usePathname();
+
+    // If the URL starts with /admin-dashboard, don't render this navbar at all
+    if (pathname.startsWith("/admin-dashboard")) {
+        return null;
+    }
+
     const [user, setUser] = useState<any>(null);
 
     useEffect(() => {

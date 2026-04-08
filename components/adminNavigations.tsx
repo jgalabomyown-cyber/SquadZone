@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { supabase } from '@/lib/supabaseClient';
 import { 
   faChartPie, faUsers, faShieldAlt, faGamepad, 
   faClock, faSignOutAlt, faBars, faTimes 
@@ -11,9 +12,16 @@ import {
 export default function AdminNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/');
+    router.refresh();
+  };
 
   const menuItems = [
-    { label: 'Overview', icon: faChartPie, href: '/admin-dashboard' },
+    { label: 'Home', icon: faChartPie, href: '/admin-dashboard' },
     { label: 'User Management', icon: faUsers, href: '/admin-dashboard/users' },
     { label: 'Squad Control', icon: faShieldAlt, href: '/admin-dashboard/squads' },
     { label: 'Match Engine', icon: faGamepad, href: '/admin-dashboard/matches' },
@@ -64,7 +72,10 @@ export default function AdminNavigation() {
 
         {/* LOGOUT AT BOTTOM */}
         <div className="absolute bottom-0 w-full p-8 border-t border-white/5">
-          <button className="flex items-center gap-4 text-gray-500 hover:text-red-500 transition-colors w-full font-bold text-sm uppercase">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-4 text-gray-500 hover:text-red-500 transition-colors w-full font-bold text-sm uppercase"
+          >
             <FontAwesomeIcon icon={faSignOutAlt} />
             <span>Logout</span>
           </button>
