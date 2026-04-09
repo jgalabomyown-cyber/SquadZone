@@ -65,9 +65,11 @@ export default function SquadPage() {
           </p>
 
           <div className="flex gap-4 justify-center mb-12">
+            <Link href="/home/create-squad">
             <button className="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-full font-bold text-black transition-all">
               CREATE SQUAD
             </button>
+            </Link>
           </div>
 
           <h2 className="text-left text-xl font-bold mb-6 border-l-4 border-orange-500 pl-4">

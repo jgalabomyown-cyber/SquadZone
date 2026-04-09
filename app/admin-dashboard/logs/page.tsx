@@ -21,9 +21,13 @@ export default function LogsPage() {
         .order('visited_at', { ascending: false })
         .limit(100);
 
+      console.log('Fetched data:', data);
+      console.log('Error:', error);
+
       if (error) throw error;
       setLogs(data || []);
     } catch (err: any) {
+      console.error('Fetch error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
