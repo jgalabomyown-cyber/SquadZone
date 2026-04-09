@@ -21,15 +21,9 @@ export default function Navbar() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [user, setUser] = useState<any>(null);
 
     const pathname = usePathname();
-
-    // If the URL starts with /admin-dashboard, don't render this navbar at all
-    if (pathname.startsWith("/admin-dashboard")) {
-        return null;
-    }
-
-    const [user, setUser] = useState<any>(null);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -51,6 +45,11 @@ export default function Navbar() {
         setIsMenuOpen(false);
         setAuthMode(null);
     }, [pathname]);
+
+    // If the URL starts with /admin-dashboard, don't render this navbar at all
+    if (pathname.startsWith("/admin-dashboard")) {
+        return null;
+    }
 
     const closeAuth = () => {
         setAuthMode(null);

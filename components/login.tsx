@@ -67,14 +67,17 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
         // Using .toLowerCase() makes it safer (handles 'Admin' vs 'admin')
         if (profile?.role?.toLowerCase() === "admin") {
           router.push("/admin-dashboard");
+        } else if (profile?.role?.toLowerCase() === "player") {
+          router.push("/home");
         } else {
-          router.push("/profile");
+          // If role is missing or unrecognized, default to home
+          router.push("/home");
         }
         
       } catch (err) {
         console.error("Role fetch error:", err);
         // Fallback if role fetch fails: send to profile
-        router.push("/profile");
+        router.push("/home");
       } finally {
         setLoading(false);
       }
