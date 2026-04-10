@@ -66,7 +66,7 @@ export default function Login({ onSuccess, switchToSignup }: LoginProps) {
         // 4. Final Redirect Logic
         // Using .toLowerCase() makes it safer (handles 'Admin' vs 'admin')
         if (profile?.role?.toLowerCase() === "admin") {
-          router.push("/admin-dashboard");
+          router.push("/admin");
         } else if (profile?.role?.toLowerCase() === "player") {
           router.push("/home");
         } else {

@@ -44,7 +44,7 @@ export default function UserActions({user}: {user: any}) {
                         <hr className="dropdown-divider" />
                         
                         <li className='dropdown-item profile'>
-                            <span><a href="/profile">Profile</a></span>
+                            <span><a href="/home/profile">Profile</a></span>
                         </li>
 
                         <li className="dropdown-item logout" onClick={handleLogout}>

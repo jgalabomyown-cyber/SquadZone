@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNavigation from '@/components/adminNavigations';
 import { supabase } from '@/lib/supabaseClient';
+import AdminHeader from '@/components/adminHeader';
 
 interface User {
   id: string;
@@ -37,17 +38,15 @@ export default function UsersPage() {
     }
   };
 
-  if (loading) return <div className="min-h-screen bg-[#0d0914] text-gray-300 pt-24 lg:ml-64 p-8 flex items-center justify-center"><div className="animate-pulse">Loading users...</div></div>;
-  if (error) return <div className="min-h-screen bg-[#0d0914] text-gray-300 pt-24 lg:ml-64 p-8 flex items-center justify-center text-red-400">{error}</div>;
+  if (loading) return <div className="min-h-screen bg-[#0d0914] text-gray-300 lg:ml-64 p-8 flex items-center justify-center"><div className="animate-pulse">Loading users...</div></div>;
+  if (error) return <div className="min-h-screen bg-[#0d0914] text-gray-300 lg:ml-64 p-8 flex items-center justify-center text-red-400">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-[#0d0914] text-gray-300 pt-24">
+    <div className="min-h-screen bg-[#0d0914] text-gray-300">
       <AdminNavigation />
-      <main className="p-8 lg:ml-64 overflow-auto">
-        <header className="mb-8">
-          <h1 className="text-2xl font-bold text-white uppercase tracking-tight">User Management</h1>
-          <p className="text-gray-500 mt-2">Total users: {users.length}</p>
-        </header>
+      <AdminHeader title="User Management" />
+      <main className="p-8 lg:ml-64 overflow-auto pt-16">
+        <p className="text-gray-500 mt-2 mb-8">Total users: {users.length}</p>
         <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
           <table className="w-full">
             <thead className="bg-black/20">

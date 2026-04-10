@@ -21,11 +21,11 @@ export default function AdminNavigation() {
   };
 
   const menuItems = [
-    { label: 'Home', icon: faChartPie, href: '/admin-dashboard' },
-    { label: 'User Management', icon: faUsers, href: '/admin-dashboard/users' },
-    { label: 'Squad Control', icon: faShieldAlt, href: '/admin-dashboard/squads' },
-    { label: 'Match Engine', icon: faGamepad, href: '/admin-dashboard/matches' },
-    { label: 'Visitor Logs', icon: faClock, href: '/admin-dashboard/logs' },
+    { label: 'Home', icon: faChartPie, href: '/admin' },
+    { label: 'User Management', icon: faUsers, href: '/admin/users' },
+    { label: 'Squad Control', icon: faShieldAlt, href: '/admin/squads' },
+    { label: 'Match Engine', icon: faGamepad, href: '/admin/matches' },
+    { label: 'Visitor Logs', icon: faClock, href: '/admin/logs' },
   ];
 
   return (

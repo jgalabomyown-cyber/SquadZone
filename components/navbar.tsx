@@ -106,8 +106,8 @@ export default function Navbar() {
                 </Link>
                 </div>
                 <nav className="menu-btns hidden lg:flex">
-                    <a href="./home" className="menu-link">HOME</a>
-                    <a href="./squad" className="menu-link">SQUAD</a>
+                    <a href="/home" className="menu-link">HOME</a>
+                    <a href="/home/squad" className="menu-link">SQUAD</a>
                     <a href="#" className="menu-link">LEADERBOARDS</a>
                     <a href="#" className="menu-link">TOURNAMENTS</a>
                     <a href="#" className="menu-link">STORE</a>
